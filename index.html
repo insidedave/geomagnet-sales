@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoMagnet™ Enrollment Sales Process</title>
+    <meta name="description" content="The Five-Step Enrollment Sales Process for GeoMagnet">
+    
+    <!-- Font Import for Premium Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            /* Palette matched to image schema */
+            --bg-dark: #0B1120; /* Deepest Navy/Black */
+            --bg-card: #1E293B; /* Lighter Navy */
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            
+            /* Step Colors */
+            --step-1: #F59E0B; /* Orange */
+            --step-2: #EC4899; /* Pink/Red */
+            --step-3: #A855F7; /* Purple */
+            --step-4: #3B82F6; /* Blue */
+            --step-5: #10B981; /* Green */
+
+            /* UI Elements */
+            --glass: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --sidebar-width: 320px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 180px; /* Space for mobile footer */
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                padding-right: var(--sidebar-width); /* Space for desktop sidebar */
+                padding-bottom: 0;
+            }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .highlight { color: var(--text-main); font-weight: 600; }
+        .text-sm { font-size: 0.875rem; color: var(--text-muted); }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 0%, #2e3a50 0%, var(--bg-dark) 70%);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--text-main);
+            color: var(--bg-dark);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { border-color: var(--text-main); }
+        
+        .btn-ai {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-ai:hover {
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* --- TIMELINE/INFOGRAPHIC --- */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Vertical Line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 28px; /* Mobile Alignment */
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                var(--step-1) 0%, 
+                var(--step-2) 25%, 
+                var(--step-3) 50%, 
+                var(--step-4) 75%, 
+                var(--step-5) 100%
+            );
+            opacity: 0.3;
+        }
+
+        .step-card {
+            position: relative;
+            margin-bottom: 60px;
+            padding-left: 80px; /* Space for circle */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .step-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Step Circle */
+        .step-circle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid transparent; /* Colored by variable */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .step-content {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            opacity: 0.8;
+        }
+
+        .key-points {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .key-points li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .key-points li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: currentColor; /* Inherits step color */
+        }
+
+        /* Accordion */
+        .accordion-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            width: 100%;
+            padding: 12px;
+            text-align: left;
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .accordion-btn:hover { background: rgba(255,255,255,0.1); }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            margin-top: -4px; /* Slight overlap */
+        }
+        
+        .accordion-inner { padding: 16px; font-size: 0.9rem; color: #cbd5e1; }
+        .accordion-inner h4 { color: #fff; margin-bottom: 8px; margin-top: 12px; font-size: 0.95rem; }
+        .accordion-inner h4:first-child { margin-top: 0; }
+        .accordion-inner ul { padding-left: 20px; margin-bottom: 10px; }
+
+        /* Step Specific Colors */
+        .s-1 { border-color: var(--step-1); color: var(--step-1); box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .s-1-text { color: var(--step-1); }
+        
+        .s-2 { border-color: var(--step-2); color: var(--step-2); box-shadow: 0 0 15px rgba(236, 72, 153, 0.2); }
+        .s-2-text { color: var(--step-2); }
+
+        .s-3 { border-color: var(--step-3); color: var(--step-3); box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); }
+        .s-3-text { color: var(--step-3); }
+
+        .s-4 { border-color: var(--step-4); color: var(--step-4); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .s-4-text { color: var(--step-4); }
+
+        .s-5 { border-color: var(--step-5); color: var(--step-5); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+        .s-5-text { color: var(--step-5); }
+
+
+        /* --- DEPLOYMENT SECTION --- */
+        .deployment-section {
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.2);
+            margin-top: 40px;
+        }
+
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { color: var(--step-4); margin-bottom: 10px; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .deploy-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .deploy-card:hover { border-color: var(--step-4); transform: translateY(-3px); }
+        
+        .deploy-card.active {
+            border-color: var(--step-4);
+            background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), var(--bg-card));
+        }
+
+        .deploy-card.active::after {
+            content: 'Selected';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.7rem;
+            background: var(--step-4);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .card-subtitle { font-size: 0.85rem; color: var(--step-4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        /* Recommendation Panel */
+        .rec-panel {
+            max-width: 1000px;
+            margin: 24px auto 0;
+            padding: 16px 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--step-4);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeIn 0.3s;
+        }
+        .rec-panel.visible { display: flex; flex-wrap: wrap; gap: 10px; }
+        .rec-label { font-size: 0.8rem; text-transform: uppercase; color: var(--step-4); font-weight: 700; letter-spacing: 1px; }
+        .rec-text { font-size: 0.95rem; font-weight: 500; }
+
+        /* --- STICKY BUILDER (Footer/Sidebar) --- */
+        .builder-panel {
+            position: fixed;
+            background: #111827;
+            border-top: 1px solid var(--border);
+            z-index: 100;
+            padding: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Mobile Default */
+        .builder-panel {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: auto;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: translateY(calc(100% - 70px)); /* Peeking */
+            transition: transform 0.3s ease-out;
+        }
+
+        .builder-panel.expanded { transform: translateY(0); }
+
+        .builder-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin: -10px auto 20px;
+            cursor: pointer;
+        }
+
+        .builder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer; /* Click to expand on mobile */
+        }
+        
+        .builder-title { font-size: 1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;}
+        .builder-toggle { font-size: 0.8rem; color: var(--step-4); }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+        
+        select, input[type="date"], input[type="text"] {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+        }
+        
+        select:focus, input:focus { outline: none; border-color: var(--step-4); }
+
+        .btn-generate {
+            width: 100%;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: #fff;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-generate.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .output-area {
+            margin-top: 20px;
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            display: none;
+            flex-grow: 1;
+        }
+        
+        .output-area.show { display: block; animation: fadeIn 0.3s; }
+        
+        .output-field-group { margin-bottom: 12px; }
+        .output-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+        .copy-link { color: var(--step-5); cursor: pointer; text-decoration: underline; }
+        .copy-link:hover { color: #fff; }
+
+        .copy-box {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            font-family: monospace;
+            font-size: 0.8rem;
+            resize: none;
+            line-height: 1.4;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .copy-box:focus { outline: none; border-color: var(--step-5); }
+        .copy-box.subject { height: 38px; white-space: nowrap; overflow-x: auto; }
+        .copy-box.body { height: 160px; }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(11, 17, 32, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            padding: 20px;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--step-2);
+            width: 100%;
+            max-width: 500px;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.open .modal-card { transform: scale(1); }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; gap: 8px; align-items: center;}
+        .close-modal { color: var(--text-muted); font-size: 1.5rem; }
+        
+        .ai-input-area textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 12px;
+        }
+        .ai-input-area textarea:focus { border-color: var(--step-2); outline: none; }
+        
+        .ai-response {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--step-2);
+            font-size: 0.95rem;
+            color: #f3e8ff;
+            display: none;
+        }
+        .ai-response.show { display: block; animation: fadeIn 0.3s; }
+
+        /* --- DESKTOP STYLES --- */
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            
+            .timeline::before { left: 50%; transform: translateX(-50%); }
+            
+            .step-card {
+                width: 50%;
+                margin-bottom: 0;
+                padding-bottom: 60px;
+            }
+            
+            .step-card:nth-child(odd) {
+                left: 0;
+                padding-right: 50px;
+                padding-left: 0;
+                text-align: right;
+            }
+            
+            .step-card:nth-child(even) {
+                left: 50%;
+                padding-left: 50px;
+                text-align: left;
+            }
+
+            .step-circle {
+                left: auto;
+                right: -28px; /* Center relative to 50% width */
+            }
+            
+            .step-card:nth-child(even) .step-circle {
+                left: -28px;
+                right: auto;
+            }
+
+            .step-header { flex-direction: row; }
+            .step-card:nth-child(odd) .step-header { flex-direction: row-reverse; }
+
+            .cards-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .builder-panel {
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: auto;
+                width: var(--sidebar-width);
+                transform: none; /* Always visible */
+                border-top: none;
+                border-left: 1px solid var(--border);
+                overflow-y: auto;
+            }
+            .builder-handle { display: none; }
+            .builder-header { cursor: default; }
+            .builder-toggle { display: none; }
+            
+            /* Hide Open Builder Button on Desktop */
+            .rec-panel .btn-outline { display: none; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .spinner {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 2px solid #fff;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR / BOTTOM SHEET BUILDER -->
+    <aside class="builder-panel" id="builderPanel">
+        <div class="builder-handle" onclick="toggleBuilder()"></div>
+        <div class="builder-header" onclick="toggleBuilder()">
+            <div class="builder-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                Smart Outreach Gen
+            </div>
+            <div class="builder-toggle">Tap to open ▲</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Institution Name</label>
+            <input type="text" id="inputUniversity" placeholder="e.g. State University">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Touchpoint</label>
+            <select id="selectTouchpoint" onchange="updateDeploymentFeedback()">
+                <option value="Visit Take-Home">Visit Take-Home Magnet</option>
+                <option value="Admitted Packet Insert">Admitted Packet Insert</option>
+                <option value="Decision-Window Mailer">Decision-Window Mailer</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Quantity</label>
+            <select id="selectQty" onchange="updateDeploymentFeedback()">
+                <option value="1,000">1,000 units</option>
+                <option value="2,500">2,500 units</option>
+                <option value="5,000">5,000 units</option>
+                <option value="10,000">10,000 units</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Target In-Hand Date</label>
+            <input type="date" id="inputDate" onchange="updateDeploymentFeedback()">
+        </div>
+
+        <button class="btn-generate" id="genBtn" onclick="generateAIEmail()">
+            <span>✨ Generate Draft</span>
+        </button>
+
+        <!-- UPDATED OUTPUT AREA -->
+        <div class="output-area" id="outputArea">
+            <div class="output-field-group">
+                <div class="output-label">
+                    <span>Subject Line</span>
+                    <span class="copy-link" onclick="copyText(document.getElementById('emailSubject').value, this)">Copy Subject</span>
+                </div>
+                <input type="text" class="copy-box subject" id="emailSubject" readonly>
+            </div>
+            
+            <div class="output-field-group">
+                <div class="output-label">
+                    <span>Email Body</span>
+                    <span class="copy-link" onclick="copyText(document.getElementById('emailBody').value, this)">Copy Body</span>
+                </div>
+                <textarea class="copy-box body" id="emailBody" readonly></textarea>
+            </div>
+        </div>
+    </aside>
+
+    <!-- OBJECTION CRUSHER MODAL -->
+    <div class="modal-overlay" id="objectionModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">✨ AI Objection Crusher</div>
+                <button class="close-modal" onclick="toggleObjectionModal()">×</button>
+            </div>
+            <p class="text-sm" style="margin-bottom:12px;">Type a prospect's objection below. Gemini will generate a value-based rebuttal.</p>
+            <div class="ai-input-area">
+                <textarea id="objectionInput" placeholder="e.g., 'We don't have the budget for custom magnets right now.'"></textarea>
+                <button class="btn btn-ai" style="width:100%; justify-content:center;" id="crushBtn" onclick="handleObjection()">
+                    <span>Crush Objection</span>
+                </button>
+            </div>
+            <div class="ai-response" id="objectionResponse">
+                <strong>Suggested Rebuttal:</strong><br>
+                <span id="rebuttalText"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PITCH COACH MODAL -->
+    <div class="modal-overlay" id="pitchModal">
+        <div class="modal-card" style="border-color: var(--step-4);">
+            <div class="modal-header">
+                <div class="modal-title">✨ AI Pitch Coach</div>
+                <button class="close-modal" onclick="togglePitchModal()">×</button>
+            </div>
+            <p class="text-sm" style="margin-bottom:12px;">Type your opening line for Step 2. Gemini will rate it against the "Impression Generator" positioning.</p>
+            <div class="ai-input-area">
+                <textarea id="pitchInput" placeholder="e.g., 'Hey, I wanted to show you some cool swag for your admitted students...'"></textarea>
+                <button class="btn btn-ai" style="width:100%; justify-content:center; background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);" id="pitchBtn" onclick="analyzePitch()">
+                    <span>Analyze My Pitch</span>
+                </button>
+            </div>
+            <div class="ai-response" id="pitchResponse" style="background: rgba(59, 130, 246, 0.1); border-left-color: var(--step-4);">
+                <strong>Coach's Feedback:</strong><br>
+                <span id="pitchFeedbackText"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="container">
+            
+            <!-- Hero -->
+            <section class="hero">
+                <span class="badge">Enrollment Only</span>
+                <h1>The Five-Step<br>Enrollment Sales Process</h1>
+                <p>GeoMagnet™ — daily home visibility during the decision window</p>
+                <div class="btn-group">
+                    <a href="#step-1" class="btn btn-primary">Start Process</a>
+                    <a href="#deployment" class="btn btn-outline">View Options</a>
+                </div>
+            </section>
+
+            <!-- Interactive Timeline -->
+            <div class="timeline">
+
+                <!-- STEP 1 -->
+                <div class="step-card" id="step-1">
+                    <div class="step-circle s-1">01</div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h3 class="step-title">Prospecting</h3>
+                            <!-- Icon: Target -->
+                            <svg class="step-icon s-1-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                                <path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/>
+                            </svg>
+                        </div>
+                        <ul class="key-points s-1-text">
+                            <li>Target leaders who own recruitment touchpoints (visits, admits, comms).</li>
+                            <li>Prioritize schools where differentiation + conversion pressure is real.</li>
+                            <li>Position GeoMagnet as a home-environment impression engine.</li>
+                        </ul>
+                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                            More Details <span>+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p>GeoMagnet works because it lives where decisions get discussed—at home. It’s not swag. It’s a simple, visible reminder that keeps the institution present during the weeks that matter most.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-card">
+                    <div class="step-circle s-2">02</div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h3 class="step-title">Connecting</h3>
+                            <!-- Icon: Users/Handshake -->
+                            <svg class="step-icon s-2-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <ul class="key-points s-2-text">
+                            <li>Lead with a touchpoint idea, not a product pitch.</li>
+                            <li>Core line: “GeoMagnet keeps your institution visible at home—daily.”</li>
+                            <li>CTA: 15 minutes to map where it fits in their flow.</li>
+                        </ul>
+                        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                            <button class="accordion-btn" style="flex:1;" onclick="toggleAccordion(this)">
+                                Core Script <span>+</span>
+                            </button>
+                            <button class="btn-ai" style="padding:10px 16px; border-radius:8px; font-weight:600; font-size:0.9rem;" onclick="togglePitchModal()">
+                                ✨ Pitch Coach
+                            </button>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p>Keep it short. One outcome. One ask. The point is to earn a conversation about where a “daily visibility” item plugs into what they already do.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-card">
+                    <div class="step-circle s-3">03</div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h3 class="step-title">Qualifying</h3>
+                            <!-- Icon: Message -->
+                            <svg class="step-icon s-3-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <ul class="key-points s-3-text">
+                            <li>Identify the best insertion point (visit / admitted packet / decision-window mailer).</li>
+                            <li>Confirm timing window: post-visit, post-admit, pre-deposit, melt season.</li>
+                            <li>Confirm who owns the touchpoint and distribution.</li>
+                        </ul>
+                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                            Qualification Questions <span>+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p>Qualifying is not “selling.” It’s choosing the moment. If they already run visits/admitted mailers, you’re not adding work—you’re upgrading what they send.</p>
+                                <h4>Fit-check Questions</h4>
+                                <ul>
+                                    <li>Where do you have the highest attention window—visit, admit, or pre-deposit?</li>
+                                    <li>What do you send today that stays visible at home?</li>
+                                    <li>If you added one “always-seen” reminder, where would it go?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="step-card">
+                    <div class="step-circle s-4">04</div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h3 class="step-title">Show Value</h3>
+                            <!-- Icon: Chart -->
+                            <svg class="step-icon s-4-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <ul class="key-points s-4-text">
+                            <li>Daily home visibility during the decision window.</li>
+                            <li>Parent visibility without being “salesy.”</li>
+                            <li>No operational lift—fits into existing touchpoints.</li>
+                        </ul>
+                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                            Value Flow <span>+</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p>Most recruitment pieces get one glance. GeoMagnet becomes a daily cue. It’s simple, inexpensive, and durable—designed to be seen repeatedly, not stored away.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5 -->
+                <div class="step-card">
+                    <div class="step-circle s-5">05</div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h3 class="step-title">Closing</h3>
+                            <!-- Icon: Check -->
+                            <svg class="step-icon s-5-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <ul class="key-points s-5-text">
+                            <li>Close as a simple deployment decision (not a pilot).</li>
+                            <li>Confirm: touchpoint • quantity • in-hand date • delivery method.</li>
+                            <li>Close line: “Easy to deploy immediately—no operational lift.”</li>
+                        </ul>
+                        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+                            <button class="accordion-btn" style="flex:1;" onclick="toggleAccordion(this)">
+                                Close Checklist <span>+</span>
+                            </button>
+                            <button class="btn-ai" style="padding:10px 16px; border-radius:8px; font-weight:600; font-size:0.9rem;" onclick="toggleObjectionModal()">
+                                ✨ Objection Assistant
+                            </button>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <p>Make it easy to say yes. You’re not asking them to test a theory—you’re offering a proven type of touchpoint: a daily, visible reminder in the home.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- End Timeline -->
+
+            <!-- Deployment Options -->
+            <section class="deployment-section" id="deployment">
+                <div class="section-header">
+                    <h2>Deployment Options</h2>
+                    <p class="text-sm">Click an option to select it for the builder.</p>
+                </div>
+                <div class="cards-grid">
+                    
+                    <div class="deploy-card" onclick="selectDeployment('Visit Take-Home')">
+                        <div class="card-subtitle">Option A</div>
+                        <div class="card-title">Visit Take-Home</div>
+                        <p class="text-sm">Handout at check-in or departure.</p>
+                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">
+                            <p class="text-sm"><strong>Best for:</strong> Visit Experience</p>
+                        </div>
+                    </div>
+
+                    <div class="deploy-card" onclick="selectDeployment('Admitted Packet Insert')">
+                        <div class="card-subtitle">Option B</div>
+                        <div class="card-title">Admitted Packet Insert</div>
+                        <p class="text-sm">Insert into acceptance packet.</p>
+                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">
+                            <p class="text-sm"><strong>Best for:</strong> Yield & Belonging</p>
+                        </div>
+                    </div>
+
+                    <div class="deploy-card" onclick="selectDeployment('Decision-Window Mailer')">
+                        <div class="card-subtitle">Option C</div>
+                        <div class="card-title">Decision-Window Mailer</div>
+                        <p class="text-sm">Timed drop pre-deadline.</p>
+                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">
+                            <p class="text-sm"><strong>Best for:</strong> Melt Reduction</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: Dynamic Feedback Panel -->
+                <div id="recPanel" class="rec-panel">
+                    <div>
+                        <div class="rec-label">Recommended Next Step</div>
+                        <div class="rec-text" id="recText">Select an option above</div>
+                    </div>
+                    <a href="#" class="btn-outline" style="font-size:0.8rem; padding:6px 12px; border-radius:4px;" onclick="document.querySelector('.builder-panel').classList.add('expanded'); return false;">Open Builder</a>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // --- API CONFIGURATION ---
+        const DEMO_MODE = true; // Hardcoded safety switch
+
+        // --- MOCK DATA GENERATOR (Fallback) ---
+        function getMockResponse(promptText) {
+            // 1. Email Generation
+            if (promptText.includes("Write a concise, professional sales email")) {
+                const uni = document.getElementById('inputUniversity').value || 'State University';
+                const touch = document.getElementById('selectTouchpoint').value;
+                const qty = document.getElementById('selectQty').value;
+                const date = document.getElementById('inputDate').value || 'TBD';
+                
+                return `Subject: Increasing Yield at ${uni} with Home Visibility
+
+Body:
+Hi [Name],
+
+I’m reaching out because you own the yield strategy at ${uni}. We know that getting admitted students to deposit often comes down to staying top-of-mind during the decision window.
+
+I’d like to propose deploying the ${touch} (${qty}) by ${date}.
+
+Unlike standard print pieces that get tossed, GeoMagnet lives on the fridge, creating daily impressions in the home environment where family discussions happen. It’s a frictionless way to drive belonging without adding operational lift to your team.
+
+Can we grab 15 minutes to discuss the artwork?
+
+Best,
+The GeoMagnet Team`;
+            }
+            
+            // 2. Objection Handling
+            if (promptText.includes("CRITICAL STRATEGIES FOR BUDGET OBJECTIONS")) {
+                return "I completely understand that budget cycles are tight right now. However, most partners use our 'Sponsor Model' to make this budget-neutral by allowing a campus partner (like your credit union) to place a small logo on the packaging backer card. This allows you to secure the daily home visibility you need without impacting your current recruitment funds.";
+            }
+            
+            // 3. Pitch Coaching
+            if (promptText.includes("sales coach for GeoMagnet")) {
+                return `⭐⭐⭐ (3/5 Stars)
+
+Feedback: You're on the right track, but ensure you emphasize the *frequency* of impressions.
+
+Actionable Tip: Replace "cool item" with "high-frequency impression generator."
+
+Better Version: "I'd like to show you an enrollment touchpoint that secures daily visibility in the admitted student's home environment."`;
+            }
+
+            return "Simulation Mode active. (This is a placeholder response).";
+        }
+
+        // --- ANIMATION ON SCROLL ---
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // --- IMPROVED ACCORDION LOGIC ---
+        function toggleAccordion(btn) {
+            // Robust traversal: find the closest container, then the content
+            const container = btn.closest('.step-content, .accordion-inner') || btn.parentElement;
+            
+            // Find content: look for next sibling or query within parent context
+            let content = btn.nextElementSibling;
+            
+            // If button is wrapped (like in Step 5), we might need to look higher or specifically target
+            if (!content || !content.classList.contains('accordion-content')) {
+                // Fallback for wrapped buttons: find content within the same parent block
+                const parentBlock = btn.closest('.step-content');
+                if (parentBlock) {
+                    content = parentBlock.querySelector('.accordion-content');
+                }
+            }
+
+            if (!content) return;
+
+            const span = btn.querySelector('span');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                if(span) span.textContent = '+';
+                btn.style.background = 'rgba(255,255,255,0.05)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                if(span) span.textContent = '-';
+                btn.style.background = 'rgba(255,255,255,0.15)';
+            }
+        }
+
+        // --- DEPLOYMENT CARD SELECTION & FEEDBACK ---
+        function selectDeployment(optionName) {
+            // Update UI Cards
+            document.querySelectorAll('.deploy-card').forEach(card => {
+                card.classList.remove('active');
+                if(card.querySelector('.card-title').textContent === optionName) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Update Builder Select
+            const select = document.getElementById('selectTouchpoint');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === optionName) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            // Update the new Feedback Panel
+            updateDeploymentFeedback();
+
+            // Open Builder on Mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('builderPanel').classList.add('expanded');
+                document.querySelector('.builder-toggle').textContent = 'Tap to close ▼';
+            }
+        }
+
+        // --- FEEDBACK PANEL LOGIC ---
+        function updateDeploymentFeedback() {
+            const touchpoint = document.getElementById('selectTouchpoint').value;
+            const qty = document.getElementById('selectQty').value;
+            const dateInput = document.getElementById('inputDate').value;
+            
+            // Fix: Parse string manually to avoid timezone shift
+            let dateStr = 'TBD';
+            if (dateInput) {
+                const [y, m, d] = dateInput.split('-');
+                dateStr = `${m}/${d}/${y}`;
+            }
+
+            const panel = document.getElementById('recPanel');
+            const text = document.getElementById('recText');
+
+            panel.classList.add('visible');
+            text.innerHTML = `Deploy <strong>${touchpoint}</strong> (${qty}) by <strong>${dateStr}</strong>.`;
+        }
+
+        // --- BUILDER UI LOGIC ---
+        function toggleBuilder() {
+            if(window.innerWidth >= 1024) return; // Disable toggle on desktop
+            
+            const panel = document.getElementById('builderPanel');
+            const toggleText = document.querySelector('.builder-toggle');
+            
+            panel.classList.toggle('expanded');
+            
+            if (panel.classList.contains('expanded')) {
+                toggleText.textContent = 'Tap to close ▼';
+            } else {
+                toggleText.textContent = 'Tap to open ▲';
+            }
+        }
+
+        // --- MODAL LOGIC (GENERIC) ---
+        let lastFocusedElement;
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const isOpen = modal.classList.contains('open');
+            
+            if (!isOpen) {
+                // OPENING
+                lastFocusedElement = document.activeElement;
+                modal.classList.add('open');
+                
+                // Focus appropriate input
+                if(modalId === 'objectionModal') document.getElementById('objectionInput').focus();
+                if(modalId === 'pitchModal') document.getElementById('pitchInput').focus();
+                
+            } else {
+                // CLOSING
+                modal.classList.remove('open');
+                
+                // Reset content
+                if(modalId === 'objectionModal') {
+                    document.getElementById('objectionResponse').classList.remove('show');
+                    document.getElementById('rebuttalText').innerText = '';
+                    document.getElementById('objectionInput').value = '';
+                }
+                if(modalId === 'pitchModal') {
+                    document.getElementById('pitchResponse').classList.remove('show');
+                    document.getElementById('pitchFeedbackText').innerText = '';
+                    document.getElementById('pitchInput').value = '';
+                }
+
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+        }
+
+        function toggleObjectionModal() { toggleModal('objectionModal'); }
+        function togglePitchModal() { toggleModal('pitchModal'); }
+
+        // Modal Event Listeners
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('open');
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+            }
+        });
+
+
+        // --- CLIPBOARD MODERNIZATION ---
+        async function copyText(text, btnElement) {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    // Fallback
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+                
+                // Visual Feedback
+                const originalText = btnElement.innerText;
+                btnElement.innerText = 'Copied!';
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
+
+        // --- GEMINI API CALLER (WITH SILENT FALLBACK) ---
+        async function callGemini(promptText) {
+            if (DEMO_MODE) {
+                // Simulate network latency
+                await new Promise(r => setTimeout(r, 1500));
+                return getMockResponse(promptText);
+            }
+        }
+
+        // --- FEATURE 1: AI EMAIL GENERATOR ---
+        async function generateAIEmail() {
+            const university = document.getElementById('inputUniversity').value || '[Institution Name]';
+            const touchpoint = document.getElementById('selectTouchpoint').value;
+            const qty = document.getElementById('selectQty').value;
+            const dateInput = document.getElementById('inputDate').value;
+            
+            // Manual date parsing fix
+            let date = '[Date TBD]';
+            if (dateInput) {
+                const [y, m, d] = dateInput.split('-');
+                date = `${m}/${d}/${y}`;
+            }
+            
+            const btn = document.getElementById('genBtn');
+            const outputArea = document.getElementById('outputArea');
+            const subjBox = document.getElementById('emailSubject');
+            const bodyBox = document.getElementById('emailBody');
+
+            // UI Loading State
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div> Generating...';
+            btn.classList.add('loading');
+            
+            // Updated Prompt to force format
+            const promptText = `
+                Context: GeoMagnet is an impression generator. Recruitment touchpoint (magnet) sent to admitted students to improve yield.
+                Task: Write a concise, professional sales email from a GeoMagnet rep to an Enrollment Director at ${university}.
+                Details to include:
+                - Propose: '${touchpoint}' deployment.
+                - Quantity: ${qty} units.
+                - Target In-Hand Date: ${date}.
+                - Value: Winning the home environment. Daily impressions.
+                Constraint: Keep it under 150 words. Be persuasive but human. Do not use placeholders like [Your Name], sign it as "The GeoMagnet Team".
+                
+                IMPORTANT FORMATTING:
+                You MUST format the output exactly as follows so I can parse it:
+                Subject: [Your Subject Line]
+                Body: [Your Email Body]
+            `;
+
+            const aiText = await callGemini(promptText);
+
+            // UI Reset
+            btn.innerHTML = originalText;
+            btn.classList.remove('loading');
+            
+            // Parse Logic
+            let subject = "Check out GeoMagnet";
+            let body = aiText;
+
+            // Simple parser looking for "Subject:" and "Body:"
+            const subjMatch = aiText.match(/Subject:\s*(.*)/i);
+            const bodyMatch = aiText.match(/Body:\s*([\s\S]*)/i);
+
+            if (subjMatch && subjMatch[1]) {
+                subject = subjMatch[1].trim();
+            }
+            if (bodyMatch && bodyMatch[1]) {
+                body = bodyMatch[1].trim();
+            } else if (subjMatch) {
+                // If we found subject but not explicit Body tag, assume rest is body
+                body = aiText.replace(subjMatch[0], '').trim();
+                // Clean up any "Body:" text if it was missed by regex but present
+                body = body.replace(/^Body:\s*/i, '');
+            }
+
+            // Show Result
+            subjBox.value = subject;
+            bodyBox.value = body;
+            outputArea.classList.add('show');
+            
+            if(window.innerWidth < 1024) {
+                document.getElementById('builderPanel').classList.add('expanded');
+            }
+        }
+
+        // --- FEATURE 2: AI OBJECTION HANDLER ---
+        async function handleObjection() {
+            const objection = document.getElementById('objectionInput').value;
+            if (!objection) return;
+
+            const btn = document.getElementById('crushBtn');
+            const responseArea = document.getElementById('objectionResponse');
+            const responseText = document.getElementById('rebuttalText');
+
+            // UI Loading State
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div> Thinking...';
+            btn.classList.add('loading');
+
+            const promptText = `
+                Context: You are a sales coach for GeoMagnet (higher-ed recruitment tool). 
+                Value: Daily impressions. Parent visibility. Ops ease. Better than disposable swag.
+
+                CRITICAL STRATEGIES FOR BUDGET OBJECTIONS (Use one or a combination):
+                1. "Sponsor Pivot": Suggest campus partner (bank/CU) branding on packaging back-card to offset cost.
+                2. "Retail Pivot": Suggest offsetting cost by selling units at bookstore/events.
+
+                The Prospect says: "${objection}"
+                
+                Task: Provide a 2-3 sentence professional, empathetic, but firm rebuttal. 
+                Tone: Keep responses short: acknowledge → reframe to visibility + simplicity → return to decision.
+                If it's a budget objection, pivot to the "Sponsor Model" or the "Retail/Net-Zero" concept.
+            `;
+
+            const aiRebuttal = await callGemini(promptText);
+
+            // UI Reset
+            btn.innerHTML = originalText;
+            btn.classList.remove('loading');
+
+            responseText.innerText = aiRebuttal;
+            responseArea.classList.add('show');
+        }
+
+        // --- FEATURE 3: AI PITCH COACH ---
+        async function analyzePitch() {
+            const pitch = document.getElementById('pitchInput').value;
+            if (!pitch) return;
+
+            const btn = document.getElementById('pitchBtn');
+            const responseArea = document.getElementById('pitchResponse');
+            const responseText = document.getElementById('pitchFeedbackText');
+
+            // UI Loading State
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div> Coaching...';
+            btn.classList.add('loading');
+
+            const promptText = `
+                You are a strict but helpful sales coach for GeoMagnet (higher-ed recruitment magnet).
+                
+                CORE POSITIONING RULES:
+                1. NEVER call it 'swag', 'merch', or 'trinkets'. It is a 'high-frequency impression generator', 'enrollment touchpoint', or 'home visibility engine'.
+                2. Focus on the value: 'winning the home environment', 'daily impressions', 'parent visibility'.
+                3. Keep it simple and punchy.
+
+                User's Pitch attempt: "${pitch}"
+
+                Task:
+                1. Give a score out of 5 stars (e.g., ⭐⭐⭐).
+                2. If they used forbidden words (swag/merch), deduct 2 stars and scold them gently.
+                3. Provide one specific, actionable tip to make it sound more premium and strategic.
+                4. Rewrite their pitch in one perfect sentence.
+            `;
+
+            const aiFeedback = await callGemini(promptText);
+
+            // UI Reset
+            btn.innerHTML = originalText;
+            btn.classList.remove('loading');
+
+            responseText.innerText = aiFeedback;
+            responseArea.classList.add('show');
+        }
+        
+        // Set default date to 30 days from now
+        const today = new Date();
+        today.setDate(today.getDate() + 30);
+        document.getElementById('inputDate').valueAsDate = today;
+
+        // Initialize feedback panel
+        updateDeploymentFeedback();
+
+    </script>
+</body>
+</html>
