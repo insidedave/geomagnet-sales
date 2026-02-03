@@ -1008,8 +1008,112 @@ The GeoMagnet Team`;
                 return "I completely understand that budget cycles are tight right now. However, most partners use our 'Sponsor Model' to make this budget-neutral by allowing a campus partner (like your credit union) to place a small logo on the packaging backer card. This allows you to secure the daily home visibility you need without impacting your current recruitment funds.";
             }
             
-            // 3. Pitch Coaching
-            if (promptText.includes("sales coach for GeoMagnet")) {
+            // 3. Pitch Coaching (SMART MOCK)
+if (promptText.includes("sales coach for GeoMagnet")) {
+  const match = promptText.match(/User's Pitch attempt:\s*"(.*?)"/);
+  const userPitch = match ? match[1].trim() : "";
+  const lower = userPitch.toLowerCase();
+
+  // Guardrails + signals
+  const forbidden = ["swag","merch","trinket","giveaway","freebie","promo","promotional"];
+  const hype = ["amazing","ultimate","revolutionary","game-changer","millions","insane","incredible","best ever"];
+  const vague = ["tool","solution","product","item","thing","platform"];
+  const homeSignals = ["home","fridge","kitchen","counter","household"];
+  const frequencySignals = ["daily","every day","always","repeated","repeat","stays visible","keeps you visible","high-frequency","frequency"];
+  const enrollmentSignals = ["admitted","admissions","enrollment","yield","deposit","decision window","decision","visit","campus visit","accepted","melt"];
+  const ctaSignals = ["15 minutes","10 minutes","quick call","can we","open to","would you be","schedule","meet","walk through","map where"];
+
+  // Simple helpers
+  const hitAny = (arr) => arr.find(w => lower.includes(w));
+  const hasAny = (arr) => !!hitAny(arr);
+
+  const hitForbidden = hitAny(forbidden);
+  const hitHype = hitAny(hype);
+  const hitVague = hitAny(vague);
+
+  const hasHome = hasAny(homeSignals);
+  const hasFreq = hasAny(frequencySignals);
+  const hasEnroll = hasAny(enrollmentSignals);
+  const hasCTA = hasAny(ctaSignals);
+
+  // Scoring rubric (1–5)
+  let score = 3;
+
+  // Big penalties
+  if (hitForbidden) score -= 2;
+  if (hitHype) score -= 1;
+  if (hitVague) score -= 1;
+
+  // Big wins
+  if (hasHome) score += 1;
+  if (hasFreq) score += 1;
+  if (hasEnroll) score += 1;
+  if (hasCTA) score += 1;
+
+  // Length shaping (opening line should be tight)
+  const wordCount = userPitch ? userPitch.split(/\s+/).filter(Boolean).length : 0;
+  if (wordCount > 40) score -= 1;
+  if (wordCount > 70) score -= 1;
+  if (wordCount < 7 && userPitch.length > 0) score -= 1; // too short to carry value
+
+  // Clamp
+  score = Math.max(1, Math.min(5, score));
+
+  // Feedback builder: reference what they missed
+  const notes = [];
+
+  if (!userPitch) {
+    return `⭐☆☆☆☆ (1/5 Stars)
+
+Feedback: You didn’t enter an opening line.
+
+Actionable Tip: Paste the exact sentence you plan to say to the prospect.
+
+Better Version: "I’d like to show you an enrollment touchpoint that keeps your institution visible at home every day during the decision window—can we take 15 minutes to map where it fits?"`;
+  }
+
+  if (hitForbidden) notes.push(`You used "${hitForbidden}"—that frames this as commodity swag instead of an enrollment touchpoint.`);
+  if (hitHype) notes.push(`You used "${hitHype}"—swap hype for outcomes (home visibility + daily impressions).`);
+  if (hitVague) notes.push(`"${hitVague}" is vague—name the outcome, not the object.`);
+
+  if (!hasHome) notes.push(`You didn’t anchor it to *where it lives* (home/fridge).`);
+  if (!hasFreq) notes.push(`You didn’t emphasize *frequency* (daily, always-seen, repeated impressions).`);
+  if (!hasEnroll) notes.push(`You didn’t tie it to an enrollment moment (visit/admitted/pre-deposit/decision window).`);
+  if (!hasCTA) notes.push(`You didn’t include a simple ask (e.g., “15 minutes to map where it fits”).`);
+
+  // Actionable tip: choose the highest-impact single fix
+  let tip = `Add one clean outcome + one clean ask.`;
+  if (hitForbidden) tip = `Delete "${hitForbidden}". Replace with "enrollment touchpoint" or "high-frequency impression generator."`;
+  else if (!hasHome) tip = `Add the home anchor: "visible on the fridge" or "in the home environment."`;
+  else if (!hasFreq) tip = `Add the frequency line: "daily impressions" / "always-seen reminder."`;
+  else if (!hasCTA) tip = `End with a 15-minute ask: "Can we take 15 minutes to map where it fits?"`;
+  else if (wordCount > 40) tip = `Shorten it to one sentence: outcome + home + daily + 15-minute ask.`;
+
+  // Rewrite builder (uses what they included; fills what’s missing)
+  const enrollMoment =
+    lower.includes("visit") ? "after a campus visit" :
+    (lower.includes("admit") || lower.includes("accepted")) ? "right after admission" :
+    lower.includes("deposit") ? "before deposit" :
+    "during the decision window";
+
+  const rewrite = `"I’d like to show you an enrollment touchpoint that keeps your institution visible on the fridge every day ${enrollMoment}—can we take 15 minutes to map where it fits in your current flow?"`;
+
+  // Stars
+  const stars = "⭐".repeat(score) + "☆".repeat(5 - score);
+
+  const feedback =
+    notes.length
+      ? notes.slice(0, 3).join(" ")
+      : "Strong positioning. You stayed outcome-focused and easy to deploy.";
+
+  return `${stars} (${score}/5 Stars)
+
+Feedback: ${feedback}
+
+Actionable Tip: ${tip}
+
+Better Version: ${rewrite}`;
+}
                 return `⭐⭐⭐ (3/5 Stars)
 
 Feedback: You're on the right track, but ensure you emphasize the *frequency* of impressions.
