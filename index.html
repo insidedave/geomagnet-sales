@@ -1489,20 +1489,132 @@ if (promptText.includes("sales coach for GeoMagnet")) {
             btn.innerHTML = '<div class="spinner"></div> Thinking...';
             btn.classList.add('loading');
 
+                        // --- SMART OBJECTION PROMPT (category + anti-repetition + human tone) ---
+            const raw = (objection || "").trim();
+            const lower = raw.toLowerCase();
+
+            // 1) Category detection (lightweight but powerful)
+            function detectCategory(text) {
+                // Budget / money / ROI
+                if (/(budget|expens|cost|roi|justify|allocated|cuts|fiscal)/i.test(text)) return "BUDGET";
+                // Timing / priority / busy
+                if (/(next quarter|too busy|not a priority|next year|timing|cycle|call me back|exams|enrollment|fiscal year)/i.test(text)) return "TIMING";
+                // Procurement / legal / authority
+                if (/(rfp|procurement|legal|stakeholder|department head|not authorized|approve|review|it department)/i.test(text)) return "PROCUREMENT";
+                // Competitor / status quo
+                if (/(competitor|already working with|satisfied|current way|we already have|vendor)/i.test(text)) return "COMPETITOR_STATUS_QUO";
+                // Fit / complexity / systems / features
+                if (/(doesn'?t work|systems|integrat|complicated|feature|deal[- ]breaker|custom|fit our needs)/i.test(text)) return "FIT_COMPLEXITY";
+                // Risk / fad / proof / case studies
+                if (/(risk|fad|case studies|academic|proof|evidence|pilot|references)/i.test(text)) return "PROOF_RISK";
+                return "GENERAL";
+            }
+
+            const category = detectCategory(lower);
+
+            // 2) Micro playbook: “how to rebut” by category (keeps Gemini consistent + non-repetitive)
+            const categoryGuidance = {
+                BUDGET: [
+                    "Acknowledge budget reality without apologizing.",
+                    "Reframe to *cost-to-outcome*: daily parent visibility + decision-window impressions.",
+                    "Offer one of: sponsor-offset (bank/CU) OR retail/net-zero path.",
+                    "Close with a small next step: 10–15 min mapping call."
+                ],
+                TIMING: [
+                    "Respect timing; reduce effort and propose a simple next step.",
+                    "Reframe as easy-to-deploy touchpoint that doesn’t add operational lift.",
+                    "Offer to align to their calendar: decision window / admitted-student flow.",
+                    "Close with a micro-commitment: 10 min to map where it fits."
+                ],
+                PROCUREMENT: [
+                    "Acknowledge process; show you’re procurement-ready.",
+                    "Offer to supply: spec sheet, compliance, pricing, vendor docs, timeline.",
+                    "Reframe as low-risk: clear scope, simple deployment, measurable outcome.",
+                    "Close with: who else should be on a short call?"
+                ],
+                COMPETITOR_STATUS_QUO: [
+                    "Respect their current solution.",
+                    "Differentiate: not disposable swag—this lives in the home (fridge) creating repeated impressions.",
+                    "Ask a comparison question: what outcome do you need—daily visibility or one-time touch?",
+                    "Close with: 10–15 min to compare side-by-side against their current approach."
+                ],
+                FIT_COMPLEXITY: [
+                    "Acknowledge fit concerns.",
+                    "Simplify: this is a physical touchpoint; minimal operational lift; not a systems integration.",
+                    "Ask one clarifying question to diagnose fit (workflow, audience, timing).",
+                    "Close with: offer a quick mapping call + sample/spec review."
+                ],
+                PROOF_RISK: [
+                    "Validate the need for proof.",
+                    "Offer a low-risk path: small deployment, measurable outcomes, references or a sample review.",
+                    "Reframe: the goal is daily household visibility during decision window.",
+                    "Close with: 10–15 min to define success metrics and scope."
+                ],
+                GENERAL: [
+                    "Mirror the objection briefly to show you heard them.",
+                    "Reframe to value: daily impressions + parent visibility + decision-window advantage.",
+                    "Keep it short and confident.",
+                    "Close with a clear 10–15 min next step."
+                ]
+            };
+
+            // 3) Few-shot examples to prevent same-y phrasing (Gemini learns your voice via examples)
+            // Keep these short; Gemini will mimic the structure.
+            const fewShot = {
+                BUDGET: [
+                    { o: "There is no budget for this this year.", a: "Totally fair—budgets get locked early. The reason this is worth a look is it creates *daily parent visibility* during the decision window, not a one-time touch. If budget is the blocker, we can offset via a sponsor partner or a bookstore/net-zero path—open to a quick 10–15 minutes to map the simplest option?" }
+                ],
+                TIMING: [
+                    { o: "Call me back next quarter.", a: "Absolutely—timing matters. This is an easy-to-deploy touchpoint that stays visible at home and keeps your institution top-of-mind without adding operational lift. Want to grab 10 minutes now to pencil where it would fit so next quarter is just a fast yes/no?" }
+                ],
+                PROCUREMENT: [
+                    { o: "We have to go through a formal RFP process.", a: "Understood—we can support that. I can send a one-page scope, pricing bands, production timeline, and vendor/compliance docs so procurement has what they need. Who should be included on a short 10–15 minute call to align requirements before it goes to RFP?" }
+                ],
+                COMPETITOR_STATUS_QUO: [
+                    { o: "We are already working with a competitor.", a: "That makes sense. The key difference is this isn’t disposable—it becomes a daily, in-home reminder (fridge) during the decision window, which is where family influence happens. Would you be open to 10–15 minutes to compare outcomes side-by-side against what you’re using today?" }
+                ],
+                FIT_COMPLEXITY: [
+                    { o: "Your product is just too complicated.", a: "I hear you—complexity kills adoption. This is a simple physical touchpoint with minimal operational lift; the goal is daily household visibility during the decision window. What admitted-student touchpoint would you want it to support—visit, deposit, or yield—and can we take 10 minutes to map it?" }
+                ],
+                PROOF_RISK: [
+                    { o: "We need to see more academic case studies.", a: "Completely reasonable—proof matters. We can start with a small, measurable deployment and align on success metrics (visibility + decision-window reinforcement) before scaling. Can we do a quick 10–15 minutes to define what ‘proof’ would look like for your team?" }
+                ],
+                GENERAL: [
+                    { o: "This isn't a priority right now.", a: "Got it. The reason teams prioritize this is it delivers daily household visibility during the decision window—without adding operational lift. If we could keep it simple and map where it fits in your admitted-student flow, would you be open to 10 minutes?" }
+                ]
+            };
+
+            const guidanceBullets = (categoryGuidance[category] || categoryGuidance.GENERAL)
+                .map(x => `- ${x}`).join("\n");
+
+            const examples = (fewShot[category] || fewShot.GENERAL)
+                .map(ex => `Example Objection: "${ex.o}"\nExample Rebuttal: "${ex.a}"`)
+                .join("\n\n");
+
+            // 4) Final instruction set (locks tone + structure + avoids repetitive fluff)
             const promptText = `
-                Context: You are a sales coach for GeoMagnet (higher-ed recruitment tool). 
-                Value: Daily impressions. Parent visibility. Ops ease. Better than disposable swag.
+You are an expert, human-sounding sales coach for GeoMagnet (higher-ed enrollment visibility tool).
+You generate ONE rebuttal.
 
-                CRITICAL STRATEGIES FOR BUDGET OBJECTIONS (Use one or a combination):
-                1. "Sponsor Pivot": Suggest campus partner (bank/CU) branding on packaging back-card to offset cost.
-                2. "Retail Pivot": Suggest offsetting cost by selling units at bookstore/events.
+NON-NEGOTIABLE RULES:
+- 2–4 sentences max. No bullet points. No headers.
+- Sound like a calm human (no hype words like "amazing", "game-changer", "revolutionary").
+- Do NOT say "swag" unless the prospect used it.
+- Do NOT mention "AI" or "Gemini".
+- Always end with ONE clear next-step question (10–15 minutes / quick call / map fit).
+- If the objection is budget-related, include ONE option: sponsor-offset OR retail/net-zero (not both unless needed).
 
-                The Prospect says: "${objection}"
-                
-                Task: Provide a 2-3 sentence professional, empathetic, but firm rebuttal. 
-                Tone: Keep responses short: acknowledge → reframe to visibility + simplicity → return to decision.
-                If it's a budget objection, pivot to the "Sponsor Model" or the "Retail/Net-Zero" concept.
-            `;
+CATEGORY: ${category}
+
+PLAYBOOK (how to rebut in this category):
+${guidanceBullets}
+
+STYLE EXAMPLES (match this tone + structure, don’t copy verbatim):
+${examples}
+
+Now write a rebuttal to this objection:
+"${raw}"
+            `.trim();
 
             const aiRebuttal = await callGemini(promptText);
 
