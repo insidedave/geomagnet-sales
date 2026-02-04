@@ -1389,53 +1389,49 @@ if (promptText.includes("sales coach for GeoMagnet")) {
             }
         }
 
-        // --- GEMINI API CALLER (localStorage key + clear errors) ---
+        // --- GEMINI API CALLER (NO SILENT FALLBACK, NEVER SPINS FOREVER) ---
 async function callGemini(promptText) {
-  // If you keep DEMO_MODE for presentations, this is fine:
+  // Optional demo mode (keep if you want)
   if (typeof DEMO_MODE !== "undefined" && DEMO_MODE) {
-    await new Promise(r => setTimeout(r, 700));
+    await new Promise(r => setTimeout(r, 500));
     return getMockResponse(promptText);
   }
 
-  // Pull key at runtime (do NOT hardcode into the repo)
-  const apiKey =
-    localStorage.getItem("GEMINI_API_KEY") ||
-    localStorage.getItem("GOOGLE_API_KEY") ||
-    "";
-
-  if (!apiKey) {
-    throw new Error("No API key found. Set localStorage GEMINI_API_KEY first.");
+  // Pull API key from localStorage
+  const apiKey = localStorage.getItem("GEMINI_API_KEY") || "";
+  if (!apiKey.trim()) {
+    return "No Gemini API key found. Run in Console:\nlocalStorage.setItem('GEMINI_API_KEY','YOUR_KEY_HERE')\nThen refresh.";
   }
 
   const endpoint =
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+    encodeURIComponent(apiKey.trim());
 
-  const payload = {
-    contents: [{ parts: [{ text: promptText }] }],
-    generationConfig: {
-      temperature: 0.6,
-      maxOutputTokens: 260
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: promptText }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 220 }
+      })
+    });
+
+    const dataText = await res.text(); // read once
+    if (!res.ok) {
+      return `Gemini error (${res.status}): ${dataText.slice(0, 300)}`;
     }
-  };
 
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+    const data = JSON.parse(dataText);
+    const out =
+      data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") ||
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "";
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    const msg = data?.error?.message || `HTTP ${res.status}`;
-    throw new Error(`Gemini error (${res.status}): ${msg}`);
+    return out.trim() || "Gemini returned no text.";
+  } catch (e) {
+    return `Gemini request failed: ${e?.message || e}`;
   }
-
-  const text =
-    data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") ||
-    "";
-
-  return text.trim() || "No response text returned.";
 }
 
         // --- FEATURE 1: AI EMAIL GENERATOR ---
