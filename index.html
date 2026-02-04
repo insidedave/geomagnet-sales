@@ -283,6 +283,24 @@
             transition: background 0.2s;
         }
         .accordion-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* Step 04: inline actions row (Value Flow + Fridge Effect) */
+.step4-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-top:12px;
+}
+
+.step4-actions .accordion-btn{
+  flex:1;
+  margin:0;
+}
+
+.step4-actions .btn-ai{
+  flex:0 0 auto;
+  white-space:nowrap;
+}
         
         .accordion-content {
             max-height: 0;
@@ -948,19 +966,21 @@
                             <li>Parent visibility without being “salesy.”</li>
                             <li>No operational lift—fits into existing touchpoints.</li>
                         </ul>
-                        <button class="accordion-btn" onclick="toggleAccordion(this)">
-                            Value Flow <span>+</span>
-                        </button>
-                        <div class="accordion-content">
-                            <div class="accordion-inner">
-                                <p>Most recruitment pieces get one glance. GeoMagnet becomes a daily cue. It’s simple, inexpensive, and durable—designed to be seen repeatedly, not stored away.</p>
-                            </div>
-                        </div>
-                        </div>
+                        <div class="step4-actions">
+  <button class="accordion-btn" onclick="toggleAccordion(this)">
+    Value Flow <span>+</span>
+  </button>
 
-<button class="btn-ai" style="padding:10px 16px; border-radius:8px; font-weight:600; font-size:0.9rem;" onclick="toggleFridgeModal()">
-  ✨ Fridge Effect
-</button>
+  <button class="btn-ai" style="padding:10px 16px; border-radius:8px; font-weight:600; font-size:0.9rem;" onclick="toggleFridgeModal()">
+    ✨ Fridge Effect
+  </button>
+</div>
+
+<div class="accordion-content">
+  <div class="accordion-inner">
+    <p>Most recruitment pieces get one glance. GeoMagnet becomes a daily cue. It’s simple, inexpensive, and durable—designed visibility engine, not stored away.</p>
+  </div>
+</div>
                     </div>
                 </div>
 
