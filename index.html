@@ -1422,6 +1422,63 @@ if (promptText.includes("sales coach for GeoMagnet")) {
         function toggleObjectionModal() { toggleModal('objectionModal'); }
         function togglePitchModal() { toggleModal('pitchModal'); }
 
+        // --- FRIDGE EFFECT CALCULATOR ---
+function toggleFridgeModal() { toggleModal('fridgeModal'); }
+
+function initFridgeEffect() {
+  const DAYS = 240;
+
+  // Elements - Aggregate
+  const elRecruits = document.getElementById('feInputRecruits');
+  const elHH_Agg = document.getElementById('feInputHH_Agg');
+  const elVisits_Agg = document.getElementById('feInputVisits_Agg');
+  const elDisplayRecruits = document.getElementById('feDisplayRecruits');
+  const elResultAgg = document.getElementById('feResultAggregate');
+
+  // Elements - Single Home
+  const elSingleHH = document.getElementById('feInputSingleHH');
+  const elSingleVisits = document.getElementById('feInputSingleVisits');
+  const elDisplaySingleHH = document.getElementById('feDisplaySingleHH');
+  const elDisplaySingleVisits = document.getElementById('feDisplaySingleVisits');
+  const elResultSingle = document.getElementById('feResultSingle');
+
+  // Safety: if modal isn't on the page yet, don't blow up
+  if (!elRecruits || !elHH_Agg || !elVisits_Agg || !elSingleHH || !elSingleVisits) return;
+
+  function calc() {
+    // Aggregate Calc
+    const recruits = parseInt(elRecruits.value, 10);
+    const hhAgg = parseInt(elHH_Agg.value, 10);
+    const visitsAgg = parseInt(elVisits_Agg.value, 10);
+    const totalImpressions = recruits * hhAgg * visitsAgg * DAYS;
+
+    // Single Home Calc
+    const hhSingle = parseInt(elSingleHH.value, 10);
+    const visitsSingle = parseInt(elSingleVisits.value, 10);
+    const singleImpressions = hhSingle * visitsSingle * DAYS;
+
+    // Updates
+    elDisplayRecruits.innerText = recruits.toLocaleString();
+    elResultAgg.innerText = totalImpressions.toLocaleString();
+
+    elDisplaySingleHH.innerText = hhSingle;
+    elDisplaySingleVisits.innerText = visitsSingle;
+    elResultSingle.innerText = singleImpressions.toLocaleString();
+  }
+
+  // Listeners
+  [elRecruits, elHH_Agg, elVisits_Agg, elSingleHH, elSingleVisits].forEach(el => {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  // Initial Run
+  calc();
+}
+
+// Initialize after DOM is ready
+document.addEventListener('DOMContentLoaded', initFridgeEffect);
+        
         // Modal Event Listeners
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
