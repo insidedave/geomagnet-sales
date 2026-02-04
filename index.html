@@ -1008,16 +1008,107 @@ The GeoMagnet Team`;
                 return "I completely understand that budget cycles are tight right now. However, most partners use our 'Sponsor Model' to make this budget-neutral by allowing a campus partner (like your credit union) to place a small logo on the packaging backer card. This allows you to secure the daily home visibility you need without impacting your current recruitment funds.";
             }
             
-            // 3. Pitch Coaching
-            if (promptText.includes("sales coach for GeoMagnet")) {
-                return `⭐⭐⭐ (3/5 Stars)
+            // 3. Pitch Coaching (SMART MOCK - SAFE STRING)
+if (promptText.includes("sales coach for GeoMagnet")) {
+  // Extract the pitch attempt if the prompt includes it
+  var m = promptText.match(/User's Pitch attempt:\s*"(.*?)"/);
+  var userPitch = (m && m[1]) ? m[1].trim() : "";
+  var lower = userPitch.toLowerCase();
 
-Feedback: You're on the right track, but ensure you emphasize the *frequency* of impressions.
+  // Word lists
+  var forbidden = ["swag","merch","trinket","giveaway","freebie","promo","promotional"];
+  var hype = ["amazing","ultimate","revolutionary","game-changer","millions","insane","incredible","best ever","amazing new tool"];
+  var vague = ["tool","solution","product","item","thing","platform","new tool"];
 
-Actionable Tip: Replace "cool item" with "high-frequency impression generator."
+  var homeSignals = ["home","fridge","kitchen","counter","household","family"];
+  var freqSignals = ["daily","every day","always","repeated","repeat","stays visible","keeps you visible","high-frequency","frequency","top-of-mind"];
+  var enrollSignals = ["admitted","admissions","enrollment","yield","deposit","decision window","decision","visit","campus visit","accepted","pre-deposit","melt"];
+  var ctaSignals = ["15 minutes","10 minutes","quick call","can we","open to","would you","schedule","meet","walk through","map where","time to"];
 
-Better Version: "I'd like to show you an enrollment touchpoint that secures daily visibility in the admitted student's home environment."`;
-            }
+  function hitAny(arr){
+    for (var i=0;i<arr.length;i++){
+      if (lower.indexOf(arr[i]) !== -1) return arr[i];
+    }
+    return "";
+  }
+  function hasAny(arr){ return !!hitAny(arr); }
+
+  var hitForbidden = hitAny(forbidden);
+  var hitHype = hitAny(hype);
+  var hitVague = hitAny(vague);
+
+  var hasHome = hasAny(homeSignals);
+  var hasFreq = hasAny(freqSignals);
+  var hasEnroll = hasAny(enrollSignals);
+  var hasCTA = hasAny(ctaSignals);
+
+  // Score 1–5
+  var score = 3;
+
+  if (hitForbidden) score -= 2;
+  if (hitHype) score -= 1;
+  if (hitVague) score -= 1;
+
+  if (hasHome) score += 1;
+  if (hasFreq) score += 1;
+  if (hasEnroll) score += 1;
+  if (hasCTA) score += 1;
+
+  var wc = userPitch ? userPitch.split(/\s+/).filter(Boolean).length : 0;
+  if (wc > 40) score -= 1;
+  if (wc > 70) score -= 1;
+  if (wc > 0 && wc < 7) score -= 1;
+
+  if (score < 1) score = 1;
+  if (score > 5) score = 5;
+
+  // If nothing entered
+  if (!userPitch) {
+    return "⭐☆☆☆☆ (1/5 Stars)\n\n" +
+      "Feedback: You didn’t enter an opening line.\n\n" +
+      "Actionable Tip: Paste the exact sentence you plan to say to the prospect.\n\n" +
+      "Better Version: \"I’d like to show you an enrollment touchpoint that keeps your institution visible at home every day during the decision window—can we take 15 minutes to map where it fits?\"";
+  }
+
+  // Notes (max 3)
+  var notes = [];
+  if (hitForbidden) notes.push("You used \"" + hitForbidden + "\"—that frames this as commodity swag instead of an enrollment touchpoint.");
+  if (hitHype) notes.push("You used \"" + hitHype + "\"—swap hype for outcomes (home visibility + daily impressions).");
+  if (hitVague) notes.push("\"" + hitVague + "\" is vague—name the outcome, not the object.");
+  if (!hasHome) notes.push("You didn’t anchor it to where it lives (home/fridge).");
+  if (!hasFreq) notes.push("You didn’t emphasize frequency (daily, always-seen, repeated impressions).");
+  if (!hasEnroll) notes.push("You didn’t tie it to an enrollment moment (visit/admitted/pre-deposit/decision window).");
+  if (!hasCTA) notes.push("You didn’t include a simple ask (e.g., “15 minutes to map where it fits”).");
+
+  var feedback = notes.length ? notes.slice(0,3).join(" ") : "Strong positioning. Outcome-forward and easy to deploy.";
+
+  // Tip (single highest-impact fix)
+  var tip = "Add one clean outcome + one clean ask.";
+  if (hitForbidden) tip = "Delete \"" + hitForbidden + "\". Replace with \"enrollment touchpoint\" or \"high-frequency impression generator.\"";
+  else if (!hasHome) tip = "Add the home anchor: “visible on the fridge” / “in the home environment.”";
+  else if (!hasFreq) tip = "Add the frequency line: “daily impressions” / “always-seen reminder.”";
+  else if (!hasCTA) tip = "End with a 15-minute ask: “Can we take 15 minutes to map where it fits?”";
+  else if (wc > 40) tip = "Shorten it to one sentence: outcome + home + daily + 15-minute ask.";
+
+  // Rewrite
+  var enrollMoment = "during the decision window";
+  if (lower.indexOf("visit") !== -1) enrollMoment = "after a campus visit";
+  else if (lower.indexOf("admit") !== -1 || lower.indexOf("accepted") !== -1) enrollMoment = "right after admission";
+  else if (lower.indexOf("deposit") !== -1) enrollMoment = "before deposit";
+
+  var rewrite = "\"I’d like to show you an enrollment touchpoint that keeps your institution visible on the fridge every day " + enrollMoment +
+    "—can we take 15 minutes to map where it fits in your current flow?\"";
+
+  // Stars
+  var stars = "";
+  for (var s=0; s<score; s++) stars += "⭐";
+  for (var t=score; t<5; t++) stars += "☆";
+
+  return stars + " (" + score + "/5 Stars)\n\n" +
+    "Feedback: " + feedback + "\n\n" +
+    "Actionable Tip: " + tip + "\n\n" +
+    "Better Version: " + rewrite;
+}
 
             return "Simulation Mode active. (This is a placeholder response).";
         }
