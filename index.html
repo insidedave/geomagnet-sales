@@ -1003,10 +1003,91 @@ Best,
 The GeoMagnet Team`;
             }
             
-            // 2. Objection Handling
-            if (promptText.includes("CRITICAL STRATEGIES FOR BUDGET OBJECTIONS")) {
-                return "I completely understand that budget cycles are tight right now. However, most partners use our 'Sponsor Model' to make this budget-neutral by allowing a campus partner (like your credit union) to place a small logo on the packaging backer card. This allows you to secure the daily home visibility you need without impacting your current recruitment funds.";
-            }
+            // 2. Objection Handling (SMART MOCK)
+if (promptText.includes("CRITICAL STRATEGIES FOR BUDGET OBJECTIONS")) {
+    // --- Extract the prospect's objection from the prompt ---
+    const extractObjection = () => {
+        // Common patterns you’ve used in prompts:
+        // The Prospect says: "..."
+        // Prospect says: "..."
+        // Objection: "..."
+        const patterns = [
+            /The Prospect says:\s*["“]([\s\S]*?)["”]\s*/i,
+            /Prospect says:\s*["“]([\s\S]*?)["”]\s*/i,
+            /Objection:\s*["“]([\s\S]*?)["”]\s*/i
+        ];
+        for (const re of patterns) {
+            const m = promptText.match(re);
+            if (m && m[1]) return m[1].trim();
+        }
+        return "";
+    };
+
+    const objectionRaw = extractObjection();
+    const objection = objectionRaw.toLowerCase();
+
+    // If nothing was captured, return a helpful fallback (still non-static)
+    if (!objection) {
+        return "Tell me the exact objection you heard (one sentence). I’ll give you a short rebuttal that acknowledges it, reframes to daily home visibility, and ends with a clean next step.";
+    }
+
+    // --- Lightweight classification ---
+    const hasAny = (arr) => arr.some(w => objection.includes(w));
+
+    const budget = ["budget", "cost", "price", "expensive", "funds", "money", "tight", "afford", "too much"];
+    const timing = ["not now", "later", "next year", "next cycle", "timing", "this year", "semester", "quarter", "wait", "revisit"];
+    const authority = ["approval", "committee", "leadership", "vp", "president", "procurement", "purchasing", "legal", "compliance", "sign-off", "signoff"];
+    const bandwidth = ["too busy", "bandwidth", "staff", "workload", "resources", "time", "operational", "ops", "lift", "capacity"];
+    const value = ["not a priority", "no priority", "don’t see", "dont see", "not sure", "why", "value", "worth", "need", "unnecessary"];
+    const swag = ["swag", "giveaway", "freebie", "trinket", "merch", "promo"];
+    const skepticism = ["new vendor", "unproven", "risk", "concern", "skeptical", "references", "case study", "proof", "roi", "return"];
+
+    const isBudget = hasAny(budget);
+    const isTiming = hasAny(timing);
+    const isAuthority = hasAny(authority);
+    const isBandwidth = hasAny(bandwidth);
+    const isValue = hasAny(value);
+    const isSwag = hasAny(swag);
+    const isSkeptic = hasAny(skepticism);
+
+    // --- Response builders (2–3 sentences; acknowledge → reframe → next step) ---
+    const sponsorPivot = "Most schools make this budget-neutral by using a sponsor (bank/credit union) logo on the packaging backer card—so you get the benefit without pulling from recruitment funds.";
+    const retailPivot = "Another option is a retail/net-zero path: offset cost through bookstore/event distribution while still protecting the enrollment objective.";
+
+    const baseReframe = "The key difference is this isn’t disposable swag—it becomes daily home visibility on the fridge during the decision window, where family influence actually happens.";
+
+    // Pick the best rebuttal path
+    if (isBudget) {
+        return `Totally fair—budget pressure is real. ${baseReframe} ${sponsorPivot} If I map a sponsor + quantity option that fits your cycle, are you open to a 15-minute walkthrough?`;
+    }
+
+    if (isTiming) {
+        return `That makes sense—timing matters. ${baseReframe} We can align it to your next admitted-student touchpoint with a simple, low-lift deployment. If we pick the right in-hand date, can we take 10–15 minutes to map where it fits in your flow?`;
+    }
+
+    if (isAuthority) {
+        return `Completely understood—this usually requires a couple stakeholders. ${baseReframe} The good news is it’s easy to explain and easy to deploy (touchpoint, quantity, in-hand date, delivery method). Who else should be on a short call so we can confirm fit and next steps?`;
+    }
+
+    if (isBandwidth) {
+        return `Fair—teams are stretched thin. ${baseReframe} It’s designed to be operationally light (no complex tech, no new workflow burden), and we can structure delivery to match how you already communicate with admits. If I keep it to a simple deployment decision, can we do a quick 10-minute review?`;
+    }
+
+    if (isSwag) {
+        return `I get why it can sound like “swag,” but that framing undersells it. ${baseReframe} The point is repeated, passive impressions at home—not another item that gets tossed. If I show you the positioning in one minute, can we decide if it belongs in your yield toolkit?`;
+    }
+
+    if (isSkeptic) {
+        return `That’s a reasonable concern. ${baseReframe} We keep it simple and measurable at the process level: the question is whether daily home visibility helps deposits during your decision window. If we run through a small, controlled rollout plan, would that address the risk question?`;
+    }
+
+    if (isValue) {
+        return `That’s fair—if it doesn’t drive yield, it’s not worth doing. ${baseReframe} The advantage is frequency: it stays visible every day without your team doing more work. If I tie it directly to your current admitted-student sequence, can we decide yes/no quickly?`;
+    }
+
+    // Default: still tailored (echo the objection lightly + reframe + ask)
+    return `I hear you on that. ${baseReframe} If I tailor the deployment to your current admitted-student touchpoint, are you open to a quick 10–15 minute call to see if it fits?`;
+}
             
             // 3. Pitch Coaching (SMART MOCK - SAFE STRING)
 if (promptText.includes("sales coach for GeoMagnet")) {
