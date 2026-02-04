@@ -742,7 +742,77 @@
             </div>
         </div>
     </div>
+<!-- FRIDGE EFFECT MODAL (NEW) -->
+<div class="modal-overlay" id="fridgeModal">
+  <div class="modal-card" style="border-color: var(--step-4); max-width: 600px;">
+    <div class="modal-header">
+      <div class="modal-title">✨ Fridge Effect Calculator</div>
+      <button class="close-modal" onclick="toggleFridgeModal()">×</button>
+    </div>
 
+    <!-- PANEL 1: FRIDGE FACTOR (AGGREGATE) -->
+    <div class="fe-panel" style="background: rgba(59,130,246,0.1); border-radius:12px; padding:16px; margin-bottom:20px; border:1px solid rgba(59,130,246,0.2);">
+      <h4 style="color:#fff; margin-bottom:12px; font-size:1rem; text-transform:uppercase; letter-spacing:1px;">Fridge Factor (Aggregate)</h4>
+
+      <div class="fe-control-group" style="margin-bottom:12px;">
+        <label style="display:flex; justify-content:space-between; font-size:0.85rem; color:#94a3b8; margin-bottom:4px;">
+          Target Recruits <span id="feDisplayRecruits" style="color:#fff; font-weight:700;">5,000</span>
+        </label>
+        <input type="range" id="feInputRecruits" min="1000" max="50000" step="500" value="5000" style="width:100%; accent-color:var(--step-4);">
+      </div>
+
+      <div class="fe-row" style="display:flex; gap:12px; margin-bottom:12px;">
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; color:#94a3b8; display:block; margin-bottom:4px;">Avg. Household Size</label>
+          <select id="feInputHH_Agg" style="width:100%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+            <option value="2">2 Members</option>
+            <option value="3" selected>3 Members</option>
+            <option value="4">4 Members</option>
+            <option value="5">5 Members</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; color:#94a3b8; display:block; margin-bottom:4px;">Fridge Visits/Day</label>
+          <select id="feInputVisits_Agg" style="width:100%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+            <option value="5">Low (5/day)</option>
+            <option value="12" selected>Avg (12/day)</option>
+            <option value="20">High (20/day)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fe-result-card" style="background:var(--bg-dark); padding:16px; border-radius:8px; text-align:center; border:1px solid var(--step-4);">
+        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Total Brand Impressions (8 Months)</div>
+        <div id="feResultAggregate" style="font-size:2rem; font-weight:800; color:var(--step-4);">0</div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: HOUSEHOLD EFFECT (SINGLE HOME) -->
+    <div class="fe-panel" style="background: rgba(16,185,129,0.1); border-radius:12px; padding:16px; border:1px solid rgba(16,185,129,0.2);">
+      <h4 style="color:#fff; margin-bottom:12px; font-size:1rem; text-transform:uppercase; letter-spacing:1px;">Household Effect (Single Home)</h4>
+
+      <div class="fe-control-group" style="margin-bottom:12px;">
+        <label style="display:flex; justify-content:space-between; font-size:0.85rem; color:#94a3b8; margin-bottom:4px;">
+          Household Members <span id="feDisplaySingleHH" style="color:#fff; font-weight:700;">4</span>
+        </label>
+        <input type="range" id="feInputSingleHH" min="1" max="8" step="1" value="4" style="width:100%; accent-color:var(--step-5);">
+      </div>
+
+      <div class="fe-control-group" style="margin-bottom:12px;">
+        <label style="display:flex; justify-content:space-between; font-size:0.85rem; color:#94a3b8; margin-bottom:4px;">
+          Fridge Visits/Day <span id="feDisplaySingleVisits" style="color:#fff; font-weight:700;">20</span>
+        </label>
+        <input type="range" id="feInputSingleVisits" min="5" max="50" step="1" value="20" style="width:100%; accent-color:var(--step-5);">
+      </div>
+
+      <div class="fe-result-card" style="background:var(--bg-dark); padding:16px; border-radius:8px; text-align:center; border:1px solid var(--step-5);">
+        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Impressions in One Home</div>
+        <div id="feResultSingle" style="font-size:2rem; font-weight:800; color:var(--step-5);">0</div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
     <!-- MAIN CONTENT -->
     <main>
