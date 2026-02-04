@@ -1407,8 +1407,8 @@ async function callGemini(promptText) {
     return "No API key found. In DevTools Console run:\nlocalStorage.setItem('GEMINI_API_KEY','YOUR_KEY')\nThen hard refresh and try again.";
   }
 
-  // Model options (try flash-latest first; fall back to flash)
-  const model = "gemini-1.5-flash-latest";
+  // Model options (fall back to flash)
+  const model = "gemini-1.5-flash";
   const endpoint =
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
