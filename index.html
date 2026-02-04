@@ -1664,14 +1664,21 @@ Now write a rebuttal to this objection:
 "${raw}"
             `.trim();
 
-            const aiRebuttal = await callGemini(promptText);
+            let aiRebuttal = "";
 
-            // UI Reset
-            btn.innerHTML = originalText;
-            btn.classList.remove('loading');
+try {
+  aiRebuttal = await callGemini(promptText);
+} catch (e) {
+  aiRebuttal = `Gemini request failed: ${e?.message || e}`;
+} finally {
+  // UI Reset ALWAYS happens (success or fail)
+  btn.innerHTML = originalText;
+  btn.classList.remove('loading');
+}
 
-            responseText.innerText = aiRebuttal;
-            responseArea.classList.add('show');
+// Show response
+responseText.innerText = aiRebuttal;
+responseArea.classList.add('show');
         }
 
         // --- FEATURE 3: AI PITCH COACH ---
