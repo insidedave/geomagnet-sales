@@ -1408,7 +1408,12 @@ async function callGemini(promptText) {
   }
 
   // Model options (fall back to flash)
-  const model = "gemini-1.5-flash";
+  // Use a model that exists for YOUR key.
+// You can override in console with:
+// localStorage.setItem("GEMINI_MODEL","gemini-2.0-flash")
+const model =
+  localStorage.getItem("GEMINI_MODEL") ||
+  "gemini-2.0-flash";
   const endpoint =
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
